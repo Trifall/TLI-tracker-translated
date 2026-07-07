@@ -30,6 +30,27 @@ YiHuo ETor is a comprehensive tracking and analysis tool for **Torchlight: Infin
 
 That's it! The app will run in English.
 
+### Linux Compatibility
+
+This repository is an unpacked Windows Electron release, not the original full source tree. The app logic is stored in `resources/app.asar`, which can run on Linux when paired with a Linux Electron runtime.
+
+For a quick Linux run from this checkout:
+
+```bash
+bash scripts/run-linux.sh
+```
+
+To build a reusable Linux folder:
+
+```bash
+bash scripts/build-linux-unpacked.sh
+./dist/linux-unpacked/run.sh
+```
+
+The Linux build uses Electron `32.0.0` by default. Override it with `ELECTRON_VERSION=32.0.0` if needed.
+
+The tracker reads the game's log through the in-app file picker. On Linux, select the `UE_game.log` file from wherever Torchlight: Infinite stores it in your Steam/Proton prefix or native game directory.
+
 ---
 
 ## 🔧 What I Did

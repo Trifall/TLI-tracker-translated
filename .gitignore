@@ -2,6 +2,9 @@
 extracted-app/
 extracted-app-original/
 temp-check/
+.inspect-app/
+.linux-build/
+dist/
 
 # Development Scripts
 *.js
@@ -10,6 +13,7 @@ temp-check/
 # Development Files
 package.json
 nul
+NUL
 
 # Git metadata
 .git/
