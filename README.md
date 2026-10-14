@@ -51,6 +51,36 @@ The Linux build uses Electron `32.0.0` by default. Override it with `ELECTRON_VE
 
 The tracker reads the game's log through the in-app file picker. On Linux, select the `UE_game.log` file from wherever Torchlight: Infinite stores it in your Steam/Proton prefix or native game directory.
 
+### Linux (native Electron): invisible text
+
+If the window opens with icons and borders but **no visible text** — and the log shows
+`Could not find any font: Noto Sans, sans` — Electron's font fallback is resolving the app's
+`Segoe UI` / `Microsoft YaHei` stack to zero-width glyphs. Fix with user-level fontconfig aliases:
+
+```bash
+bash scripts/fix-linux-fonts.sh
+```
+
+Needs Noto Sans + Noto Sans CJK SC installed. Undo:
+`rm ~/.config/fontconfig/conf.d/99-etor-aliases.conf && fc-cache -f`. Then relaunch
+`scripts/run-linux.sh`.
+
+### Wine: invisible text (sidebar/icons visible, no words)
+
+If you run the Windows build under Wine, you may get a window with icons and borders but **no
+visible text**. The remote UI asks for `Segoe UI` / `Microsoft YaHei`, which don't exist on
+Linux, and Wine's fallback measures every glyph as 0px wide — so nothing paints. Fix (user-level,
+reversible, touches neither app nor game):
+
+```bash
+WINEPREFIX="$HOME/Applications/ETOR/prefix" bash scripts/fix-wine-fonts.sh
+```
+
+`WINEPREFIX` is the folder containing `drive_c`. Needs `python3` + `fonttools`
+(`pip install --user fonttools`). Undo: `rm -rf ~/.local/share/fonts/etor-alias && fc-cache -f`.
+Do not copy fonts into `drive_c/windows/Fonts/` — Wine ignores them there; host fontconfig plus
+the script's `wineboot -u` rescan is what works.
+
 ---
 
 ## 🔧 What I Did
